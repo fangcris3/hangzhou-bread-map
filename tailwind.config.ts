@@ -7,6 +7,7 @@ const config: Config = {
       colors: {
         paper:      '#F5EBD6',
         ink:        '#3A2415',
+        coffee:     '#4A2D1A',
         terracotta: '#B86A47',
         sepia:      '#A67A4E',
         moss:       '#6E8E5A',

@@ -1,93 +1,125 @@
-# San Diego Fun Maps
+# Cold Brew Field Guide
 
+A personal, editorial map of San Diego cold brew — styled like a vintage Japanese tourism pamphlet crossed with an indie zine.
 
+Not a tech product. Not a delivery app. Just a friend who takes coffee very seriously made you a guide.
 
-## Getting started
+![Cover spread](docs/screenshots/01-cover.png)
+![Map view](docs/screenshots/02-map.png)
+![Card spread](docs/screenshots/03-cards.png)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+> 📸 Drop screenshots into `docs/screenshots/` with the filenames above to populate this section.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+---
 
-## Add your files
+## Make Your Own
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+This project is open-source and built to be forked. Want to map the best ramen in Tokyo? The dive bars of New Orleans? The bookstores of Lisbon? Fork the repo, swap in your own data, deploy. **No accounts, no databases, no API keys.**
+
+### Quick Start
+
+```bash
+# 1. Clone (or fork on GitHub first, then clone your fork)
+git clone https://github.com/YOUR-USERNAME/cold-brew-map.git
+cd cold-brew-map
+
+# 2. Install
+npm install
+
+# 3. Run locally — admin mode auto-enables in dev
+npm run dev
+```
+
+Open `http://localhost:5173/?admin=true` to edit. Edits write to `src/data/stores.json` and `public/photos/` — commit those files to publish.
+
+### Deploy
+
+Push to GitHub and import the repo in [Vercel](https://vercel.com/new). It's a static Vite build — no environment variables, no configuration. Done.
+
+---
+
+## How It Works
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/mengxuebi/san-diego-fun-maps.git
-git branch -M main
-git push -uf origin main
+You (locally, admin mode)            Public visitors (deployed site)
+─────────────────────────            ──────────────────────────────
+npm run dev                          Read-only static site
+?admin=true                          No admin code in bundle
+Edit cards / upload photos           No backend, no database
+↓                                    ↓
+src/data/stores.json                 What you committed = what they see
+public/photos/*.jpg
+↓
+git commit && git push
+↓
+Vercel auto-deploys
 ```
 
-## Integrate with your tools
+### Admin Mode is Dev-Only — On Purpose
 
-* [Set up project integrations](https://gitlab.com/mengxuebi/san-diego-fun-maps/-/settings/integrations)
+`?admin=true` only works when you run `npm run dev` locally. The production build literally does not contain admin code (tree-shaken via `import.meta.env.DEV`). This means:
 
-## Collaborate with your team
+- ✅ No password to leak, no auth provider to configure
+- ✅ Your deployed site has zero attack surface for editing
+- ✅ Forkers get the same workflow with zero setup
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+The trade-off: you can't edit from a phone browser. You edit on your computer, commit, push.
 
-## Test and Deploy
+---
 
-Use the built-in continuous integration in GitLab.
+## Project Structure
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+```
+src/
+├── components/
+│   ├── Book/            # Magazine page-flip container
+│   ├── CoverPage/       # Title spread
+│   ├── CardVariants/    # Coffee card layouts
+│   ├── AdminPanel/      # Edit modal (dev-only)
+│   └── Demo/            # ?demo=true preview mode
+├── data/
+│   ├── stores.json      # ← Your content lives here
+│   ├── stores.ts        # Loads from stores.json
+│   ├── storage.ts       # localStorage + dev-server sync
+│   ├── config.ts        # Site title, subtitle, etc.
+│   └── types.ts         # Store interface
+└── styles/
+    └── globals.css
+```
 
-***
+## Customizing
 
-# Editing this README
+| Want to change…       | Edit                                  |
+|-----------------------|---------------------------------------|
+| Site title / subtitle | `src/data/config.ts`                  |
+| Color palette         | `tailwind.config.ts`                  |
+| Fonts                 | `index.html` + `tailwind.config.ts`   |
+| Demo data             | `src/data/stores.json`                |
+| Card layouts          | `src/components/CardVariants/`        |
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+The design system is documented in [`CLAUDE.md`](./CLAUDE.md).
 
-## Suggestions for a good README
+---
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## URL Modes
 
-## Name
-Choose a self-explaining name for your project.
+| URL                       | What it does                                  |
+|---------------------------|-----------------------------------------------|
+| `/`                       | Public read-only view                         |
+| `/?demo=true`             | Layout/style preview gallery                  |
+| `/?backdrop=cream`        | Switch backdrop (`dark` \| `desk` \| `cream`) |
+| `/?admin=true` *(dev only)* | Edit mode — only works under `npm run dev` |
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+---
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+## Tech
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Vite · React · TypeScript · Tailwind · Vercel
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+MIT — see [LICENSE](./LICENSE). Fork it, remix it, make it yours.
+
+## Credits
+
+Original guide by [Mushroom](https://github.com/mengxuebi). Visual inspiration from the Hirosaki Apple Pie Guide Map and a deep love of paper zines.

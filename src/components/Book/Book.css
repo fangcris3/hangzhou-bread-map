@@ -88,12 +88,17 @@
 .book-page__face-shade { display: none; }
 .book-cast-shadow { display: none; }
 
-/* nav / indicator */
+/* nav / indicator
+ * Click zones live ONLY in the empty margin to the left/right of the magazine,
+ * never overlapping it — so the map / cards stay fully interactive. The
+ * magazine is `min(90vw, 90vh * 16/9)` wide, so each side margin is
+ * `(100vw - that) / 2`. We cap the zones at that width.
+ */
 .book-nav {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 20%;
+  width: calc((100vw - min(90vw, 90vh * 16 / 9)) / 2);
   z-index: 9999;
   background: transparent;
   border: none;

@@ -16,7 +16,9 @@ const BACKDROP: BookBackdrop = backdropParam === 'desk' || backdropParam === 'cr
 export default function App() {
   if (params.get('demo') === 'true') return <Demo />
 
-  const isAdmin = params.get('admin') === 'true'
+  // Admin mode is intentionally dev-only: production builds tree-shake this to `false`,
+  // so the deployed bundle contains no admin code. To edit content, run `npm run dev` locally.
+  const isAdmin = import.meta.env.DEV && params.get('admin') === 'true'
 
   const [stores, setStores] = useState<Store[]>(() => loadStores(isAdmin))
   const [editingStore, setEditingStore] = useState<Store | null>(null)
@@ -228,13 +230,12 @@ function FieldNotesPage({
   return (
     <div className="min-h-full w-full bg-paper bg-texture font-serif text-ink flex flex-col">
       {/* top banner */}
-      <div className="bg-ink shrink-0 px-8 py-3 flex items-center justify-between">
+      <div className="bg-[#4A2D1A] shrink-0 px-8 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <span className="font-display text-xl font-bold text-paper leading-none tracking-wide">San Diego Cold Brew Map</span>
-          <span className="font-mono text-[9px] tracking-widest uppercase text-sepia">— by Mushroom</span>
         </div>
         {pageCount > 1 && (
-          <span className="font-mono text-[9px] tracking-widest uppercase text-sepia">
+          <span className="font-mono text-[9px] tracking-widest uppercase text-paper/70">
             {pageIndex + 1} / {pageCount}
           </span>
         )}
@@ -295,14 +296,13 @@ function RegionalMapPage({
   return (
     <div className="h-full w-full bg-paper bg-texture font-serif text-ink flex flex-col">
       {/* banner */}
-      <div className="bg-ink shrink-0 px-8 py-3 flex items-center justify-between">
+      <div className="bg-[#4A2D1A] shrink-0 px-8 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <span className="font-display text-xl font-bold text-paper leading-none tracking-wide">San Diego Cold Brew Map</span>
-          <span className="font-mono text-[9px] tracking-widest uppercase text-sepia">— by Mushroom</span>
         </div>
         {SITE_CONFIG.googleMapsUrl && (
           <a href={SITE_CONFIG.googleMapsUrl} target="_blank" rel="noopener noreferrer"
-            className="font-mono text-[9px] tracking-widest uppercase text-sepia hover:text-paper transition-colors">
+            className="font-mono text-[9px] tracking-widest uppercase text-paper/70 hover:text-paper transition-colors">
             Google Maps ↗
           </a>
         )}
@@ -344,8 +344,8 @@ function RegionalMapPage({
                   <div className="relative w-7 h-7">
                     {store.isChain && (
                       <>
-                        <div className="absolute inset-0 rounded-full bg-terracotta/35 translate-x-1 translate-y-1" />
-                        <div className="absolute inset-0 rounded-full bg-terracotta/60 translate-x-0.5 translate-y-0.5" />
+                        <div className="absolute inset-0 rounded-full bg-terracotta border-2 border-ink translate-x-[6px] translate-y-[6px] opacity-80" />
+                        <div className="absolute inset-0 rounded-full bg-terracotta border-2 border-ink translate-x-[3px] translate-y-[3px] opacity-90" />
                       </>
                     )}
                     <div className="relative w-7 h-7 rounded-full bg-terracotta border-2 border-ink shadow-sm flex items-center justify-center">
@@ -360,6 +360,26 @@ function RegionalMapPage({
 
         {/* legend column (~35%) */}
         <div className="flex-[35] min-w-0 border-l border-dashed border-ink/15 p-6 flex flex-col overflow-y-auto">
+          {/* pin-type key */}
+          <div className="pb-4 mb-4 border-b border-dashed border-ink/15">
+            <p className="font-mono text-[10px] tracking-widest uppercase text-sepia mb-3">Key</p>
+            <div className="flex items-center gap-5 flex-wrap">
+              <div className="flex items-center gap-2">
+                <div className="relative shrink-0 w-4 h-4">
+                  <div className="relative w-4 h-4 rounded-full bg-terracotta border border-ink" />
+                </div>
+                <span className="font-serif text-xs text-ink">Independent</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="relative shrink-0 w-4 h-4 mr-[5px]">
+                  <div className="absolute inset-0 rounded-full bg-terracotta border border-ink translate-x-[4px] translate-y-[4px] opacity-80" />
+                  <div className="absolute inset-0 rounded-full bg-terracotta border border-ink translate-x-[2px] translate-y-[2px] opacity-90" />
+                  <div className="relative w-4 h-4 rounded-full bg-terracotta border border-ink" />
+                </div>
+                <span className="font-serif text-xs text-ink">Chain</span>
+              </div>
+            </div>
+          </div>
           <p className="font-mono text-[10px] tracking-widest uppercase text-sepia mb-4">Legend</p>
           {regionStores.length === 0 ? (
             <p className="font-serif italic text-xs text-ink/40">No stores assigned to this region yet.</p>
@@ -370,10 +390,11 @@ function RegionalMapPage({
                   <div className="relative shrink-0 w-6 h-6 mt-0.5">
                     {store.isChain && (
                       <>
-                        <div className="absolute inset-0 rounded-full bg-terracotta/35 translate-x-0.5 translate-y-0.5" />
+                        <div className="absolute inset-0 rounded-full bg-terracotta border border-ink translate-x-[4px] translate-y-[4px] opacity-80" />
+                        <div className="absolute inset-0 rounded-full bg-terracotta border border-ink translate-x-[2px] translate-y-[2px] opacity-90" />
                       </>
                     )}
-                    <div className="relative w-6 h-6 rounded-full bg-terracotta flex items-center justify-center">
+                    <div className="relative w-6 h-6 rounded-full bg-terracotta border border-ink flex items-center justify-center">
                       <span className="font-mono text-[9px] font-bold text-paper">{store.mapNumber}</span>
                     </div>
                   </div>

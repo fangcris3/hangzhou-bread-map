@@ -22,11 +22,15 @@ export function saveStores(stores: Store[]): void {
   } catch {
     console.warn('localStorage quota exceeded — data not persisted locally')
   }
-  fetch('/api/save-stores', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(stores),
-  }).catch(() => {})
+  // Dev-server middleware writes to src/data/stores.json so the change is committable.
+  // Tree-shaken out of production builds.
+  if (import.meta.env.DEV) {
+    fetch('/api/save-stores', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(stores),
+    }).catch(() => {})
+  }
 }
 
 export function exportJSON(stores: Store[]): void {

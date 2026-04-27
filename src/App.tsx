@@ -420,8 +420,18 @@ function ColophonPage() {
         <h2 className="font-display text-7xl font-bold text-paper leading-none mb-6">Thanks for turning the pages.</h2>
         <p className="font-serif text-base text-paper leading-relaxed">
           Compiled with too much caffeine and strong opinions.
-          <br />
-          <span className="text-sepia">— Mushroom, San Diego</span>
+        </p>
+        <p className="font-serif text-lg text-paper mt-6 tracking-wide">
+          By{' '}
+          <a
+            href="https://x.com/MengxueBi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-sepia/60 underline-offset-4 hover:text-sepia transition-colors"
+          >
+            @MengxueBi
+          </a>
+          , San Diego
         </p>
       </div>
     </div>

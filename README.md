@@ -5,10 +5,8 @@ A personal, editorial map of San Diego cold brew — styled like a vintage Japan
 Not a tech product. Not a delivery app. Just a friend who takes coffee very seriously made you a guide.
 
 ![Cover spread](docs/screenshots/01-cover.png)
-![Map view](docs/screenshots/02-map.png)
-![Card spread](docs/screenshots/03-cards.png)
-
-> 📸 Drop screenshots into `docs/screenshots/` with the filenames above to populate this section.
+![Card spread](docs/screenshots/02-card.png)
+![Map view](docs/screenshots/03-map.png)
 
 ---
 

@@ -38,9 +38,9 @@ export default function CardA({ store }: Props) {
         {/* rating callout */}
         <div className="border border-ink/40 px-3 py-2.5 flex-1 min-w-0">
           <div className="space-y-1.5">
-            <AxisRow label="Bitter" value={store.ratings.bitter} />
-            <AxisRow label="Sweet" value={store.ratings.sweetness} />
-            <AxisRow label="Power" value={store.ratings.power} />
+            <AxisRow label="酥脆" value={store.ratings.crust} />
+            <AxisRow label="松软" value={store.ratings.softness} />
+            <AxisRow label="风味" value={store.ratings.flavor} />
           </div>
           <div className="flex items-center gap-2 mt-2">
             <span className="w-14 shrink-0" />

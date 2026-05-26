@@ -1,7 +1,7 @@
 import type { Store } from './types'
 import { DEMO_STORES } from './stores'
 
-const KEY = 'coldbrewmap_stores'
+const KEY = 'hzroadbook_stores'
 
 export function loadStores(_isAdmin = false): Store[] {
   const raw = localStorage.getItem(KEY)
@@ -36,12 +36,12 @@ export function saveStores(stores: Store[]): void {
 export function exportJSON(stores: Store[]): void {
   download(
     new Blob([JSON.stringify(stores, null, 2)], { type: 'application/json' }),
-    'coldbrewmap.json',
+    'hzroadbook.json',
   )
 }
 
 export function exportCSV(stores: Store[]): void {
-  const header = ['Map Number', 'Name', 'Address', 'Neighborhood', 'Bitter', 'Sweet', 'Power', 'Review']
+  const header = ['Map Number', 'Name', 'Address', 'Neighborhood', 'Crust', 'Softness', 'Flavor', 'Review']
   const rows = stores
     .slice()
     .sort((a, b) => a.mapNumber - b.mapNumber)
@@ -50,9 +50,9 @@ export function exportCSV(stores: Store[]): void {
       s.name,
       s.address,
       s.neighborhood,
-      s.ratings.bitter,
-      s.ratings.sweetness,
-      s.ratings.power,
+      s.ratings.crust,
+      s.ratings.softness,
+      s.ratings.flavor,
       s.shortReview,
     ])
   const csv = [header, ...rows]

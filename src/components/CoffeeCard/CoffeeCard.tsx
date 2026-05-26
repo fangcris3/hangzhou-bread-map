@@ -52,9 +52,9 @@ export default function CoffeeCard({ store, onClick }: Props) {
         </p>
 
         <div className="border-t border-ink border-opacity-10 pt-4 space-y-2">
-          <RatingBar label="Bitter" value={store.ratings.bitter} />
-          <RatingBar label="Sweet" value={store.ratings.sweetness} />
-          <RatingBar label="Power" value={store.ratings.power} />
+          <RatingBar label="酥脆" value={store.ratings.crust} />
+          <RatingBar label="松软" value={store.ratings.softness} />
+          <RatingBar label="风味" value={store.ratings.flavor} />
         </div>
       </div>
     </article>

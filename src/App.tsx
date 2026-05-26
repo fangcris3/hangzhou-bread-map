@@ -79,7 +79,7 @@ export default function App() {
       address: '',
       neighborhood: '',
       shortReview: '',
-      ratings: { bitter: 3, sweetness: 3, power: 3 },
+      ratings: { crust: 3, softness: 3, flavor: 3 },
       photo: '',
       mapNumber: nextMapNumber,
     })
@@ -165,8 +165,8 @@ export default function App() {
         <section className="page-section px-6 py-16">
           <div className="flex items-end justify-between mb-8">
             <div>
-              <h2 className="font-display text-5xl font-bold text-ink mb-1 leading-none">Field Notes</h2>
-              <p className="font-mono text-xs text-sepia tracking-widest uppercase">— Ranked by Mushroom</p>
+              <h2 className="font-display text-5xl font-bold text-ink mb-1 leading-none">面包笔记</h2>
+              <p className="font-mono text-xs text-sepia tracking-widest uppercase">— 按编号排列</p>
             </div>
             {isAdmin && (
               <button
@@ -191,9 +191,9 @@ export default function App() {
         </section>
 
         <section id="map-section" className="page-section px-6 py-16">
-          <h2 className="font-display text-5xl font-bold text-ink mb-1 leading-none">The Map</h2>
-          <p className="font-mono text-xs text-sepia tracking-widest uppercase mb-6">— San Diego, CA</p>
-          <p className="font-serif italic text-sm text-ink/60">View the full guide on desktop for the interactive regional maps.</p>
+          <h2 className="font-display text-5xl font-bold text-ink mb-1 leading-none">地图</h2>
+          <p className="font-mono text-xs text-sepia tracking-widest uppercase mb-6">— 杭州，浙江</p>
+          <p className="font-serif italic text-sm text-ink/60">在桌面端打开可查看完整的分区互动地图。</p>
         </section>
       </div>
 
@@ -232,7 +232,7 @@ function FieldNotesPage({
       {/* top banner */}
       <div className="bg-[#4A2D1A] shrink-0 px-8 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <span className="font-display text-xl font-bold text-paper leading-none tracking-wide">San Diego Cold Brew Map</span>
+          <span className="font-display text-xl font-bold text-paper leading-none tracking-wide">杭州面包地图</span>
         </div>
         {pageCount > 1 && (
           <span className="font-mono text-[9px] tracking-widest uppercase text-paper/70">
@@ -291,14 +291,14 @@ function RegionalMapPage({
     })
   }
 
-  const title = region === 'north' ? 'North San Diego' : 'South San Diego'
+  const title = region === 'north' ? '西湖 · 拱墅' : '上城 · 滨江'
 
   return (
     <div className="h-full w-full bg-paper bg-texture font-serif text-ink flex flex-col">
       {/* banner */}
       <div className="bg-[#4A2D1A] shrink-0 px-8 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <span className="font-display text-xl font-bold text-paper leading-none tracking-wide">San Diego Cold Brew Map</span>
+          <span className="font-display text-xl font-bold text-paper leading-none tracking-wide">杭州面包地图</span>
         </div>
         {SITE_CONFIG.googleMapsUrl && (
           <a href={SITE_CONFIG.googleMapsUrl} target="_blank" rel="noopener noreferrer"
@@ -382,7 +382,7 @@ function RegionalMapPage({
           </div>
           <p className="font-mono text-[10px] tracking-widest uppercase text-sepia mb-4">Legend</p>
           {regionStores.length === 0 ? (
-            <p className="font-serif italic text-xs text-ink/40">No stores assigned to this region yet.</p>
+            <p className="font-serif italic text-xs text-ink/40">暂无面包店分配到此区域。</p>
           ) : (
             <div className="space-y-3">
               {regionStores.map(store => (
@@ -417,21 +417,12 @@ function ColophonPage() {
     <div className="h-full w-full bg-ink text-paper flex flex-col items-center justify-center font-serif">
       <div className="text-center px-8 max-w-lg">
         <p className="font-mono text-xs tracking-[0.4em] uppercase text-sepia mb-6">Fin.</p>
-        <h2 className="font-display text-7xl font-bold text-paper leading-none mb-6">Thanks for turning the pages.</h2>
+        <h2 className="font-display text-7xl font-bold text-paper leading-none mb-6">谢谢你翻到了最后一页。</h2>
         <p className="font-serif text-base text-paper leading-relaxed">
-          Compiled with too much caffeine and strong opinions.
+          用太多面包和强烈的个人口味编成的一本书。
         </p>
         <p className="font-serif text-lg text-paper mt-6 tracking-wide">
-          By{' '}
-          <a
-            href="https://x.com/MengxueBi"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline decoration-sepia/60 underline-offset-4 hover:text-sepia transition-colors"
-          >
-            @MengxueBi
-          </a>
-          , San Diego
+          杭州，浙江
         </p>
       </div>
     </div>

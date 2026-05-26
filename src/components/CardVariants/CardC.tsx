@@ -65,7 +65,7 @@ export default function CardC({ store }: Props) {
       {/* top row: radar + shop label */}
       <div className="flex items-start gap-4 mb-4">
         <div className="w-28 h-28 shrink-0">
-          <RadarChart b={store.ratings.bitter} s={store.ratings.sweetness} p={store.ratings.power} />
+          <RadarChart b={store.ratings.crust} s={store.ratings.softness} p={store.ratings.flavor} />
         </div>
 
         <div className="flex-1 min-w-0 pt-1">

@@ -5,9 +5,9 @@ export interface Store {
   neighborhood: string
   shortReview: string
   ratings: {
-    bitter: number
-    sweetness: number
-    power: number
+    crust: number
+    softness: number
+    flavor: number
   }
   photo: string
   mapNumber: number

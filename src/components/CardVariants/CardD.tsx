@@ -26,11 +26,11 @@ export default function CardD({ store }: Props) {
     <div className="px-6 py-5">
       {/* big numerals as headline */}
       <div className="flex items-center justify-center gap-5 mb-2">
-        <BigDigit label="Bitter" value={store.ratings.bitter} />
+        <BigDigit label="酥脆" value={store.ratings.crust} />
         <span className="font-display text-4xl text-sepia/30 leading-none">·</span>
-        <BigDigit label="Sweet" value={store.ratings.sweetness} />
+        <BigDigit label="松软" value={store.ratings.softness} />
         <span className="font-display text-4xl text-sepia/30 leading-none">·</span>
-        <BigDigit label="Power" value={store.ratings.power} />
+        <BigDigit label="风味" value={store.ratings.flavor} />
       </div>
 
       {/* sticker — center */}

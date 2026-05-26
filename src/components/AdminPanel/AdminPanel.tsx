@@ -165,10 +165,10 @@ export default function AdminPanel({ store, isNew, onSave, onDelete, onClose, on
                 <Label.Root className="font-mono text-[10px] tracking-widest uppercase text-sepia block">
                   Ratings
                 </Label.Root>
-                {(['bitter', 'sweetness', 'power'] as const).map(key => (
+                {(['crust', 'softness', 'flavor'] as const).map(key => (
                   <div key={key} className="flex items-center gap-4">
                     <span className="font-mono text-[10px] tracking-widest uppercase text-ink w-20 capitalize shrink-0">
-                      {key}
+                      {key === 'crust' ? '酥脆' : key === 'softness' ? '松软' : '风味'}
                     </span>
                     <Slider.Root
                       className="relative flex items-center flex-1 h-5"
@@ -217,7 +217,7 @@ export default function AdminPanel({ store, isNew, onSave, onDelete, onClose, on
                           onChange={() => setDraft(d => ({ ...d, region: r }))}
                         />
                         <span className="font-mono text-[10px] tracking-widest uppercase text-ink capitalize">
-                          {r ?? 'none'}
+                          {r === 'north' ? '西湖·拱墅' : r === 'south' ? '上城·滨江' : '未分区'}
                         </span>
                       </label>
                     ))}

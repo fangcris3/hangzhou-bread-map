@@ -31,9 +31,9 @@ export default function CardB({ store }: Props) {
     <div className="px-5 py-5">
       {/* rating poster — top band */}
       <div className="space-y-2 mb-5">
-        <BarRow label="Bitter" value={store.ratings.bitter} />
-        <BarRow label="Sweet" value={store.ratings.sweetness} />
-        <BarRow label="Power" value={store.ratings.power} />
+        <BarRow label="酥脆" value={store.ratings.crust} />
+        <BarRow label="松软" value={store.ratings.softness} />
+        <BarRow label="风味" value={store.ratings.flavor} />
       </div>
 
       {/* sticker — center hero */}

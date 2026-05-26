@@ -7,20 +7,26 @@ interface Props {
   stores: Store[]
 }
 
-// 西湖区 + 拱墅区 的地图中心与初始视野
-const MAP_CENTER: [number, number] = [30.278, 120.133]
-const MAP_ZOOM = 13
+// 覆盖西湖区、拱墅区、上城区（11家店）
+const MAP_CENTER: [number, number] = [30.292, 120.108]
+const MAP_ZOOM = 12
 
-function makeIcon(mapNumber: number, isChain?: boolean) {
-  const shadow = isChain
-    ? `<div style="position:absolute;inset:0;border-radius:50%;background:#C4893C;border:2px solid #2C1A0A;transform:translate(5px,5px);opacity:.55"></div>
-       <div style="position:absolute;inset:0;border-radius:50%;background:#C4893C;border:2px solid #2C1A0A;transform:translate(2.5px,2.5px);opacity:.75"></div>`
-    : ''
+const DISTRICT_COLORS: Record<string, string> = {
+  '西湖区': '#4A90D9',
+  '拱墅区': '#E8845A',
+  '上城区': '#7A9B6A',
+}
+
+function getDistrictColor(neighborhood: string): string {
+  return DISTRICT_COLORS[neighborhood] ?? '#C4893C'
+}
+
+function makeIcon(mapNumber: number, neighborhood: string) {
+  const color = getDistrictColor(neighborhood)
   return L.divIcon({
     className: '',
     html: `<div style="position:relative;width:28px;height:28px">
-      ${shadow}
-      <div style="position:relative;width:28px;height:28px;border-radius:50%;background:#C4893C;border:2px solid #2C1A0A;display:flex;align-items:center;justify-content:center;box-shadow:2px 3px 10px rgba(58,36,21,.4)">
+      <div style="position:relative;width:28px;height:28px;border-radius:50%;background:${color};border:2px solid #2C1A0A;display:flex;align-items:center;justify-content:center;box-shadow:2px 3px 10px rgba(44,26,10,.35)">
         <span style="font-family:'Courier Prime',monospace;font-size:10px;font-weight:700;color:#FAF3E4;line-height:1">${mapNumber}</span>
       </div>
     </div>`,
@@ -53,16 +59,28 @@ export default function HangzhouMap({ stores }: Props) {
 
     mappedStores.forEach(store => {
       const marker = L.marker([store.lat!, store.lng!], {
-        icon: makeIcon(store.mapNumber, store.isChain),
+        icon: makeIcon(store.mapNumber, store.neighborhood),
       }).addTo(map)
 
+      const distColor = getDistrictColor(store.neighborhood)
+      const sigHtml = store.signatureItems?.length
+        ? `<div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:3px">${store.signatureItems.map((s: string) => `<span style="font-size:9px;border:1px solid ${distColor}66;color:${distColor};padding:1px 5px;border-radius:2px">${s}</span>`).join('')}</div>`
+        : ''
+      const badgeHtml = store.rating
+        ? `<span style="font-size:9px;background:${store.rating === '强推' ? '#C4893C' : '#9E7A4A'};color:#FAF3E4;padding:1px 5px;border-radius:2px;margin-left:4px">${store.rating}</span>`
+        : ''
+      const warnHtml = store.confidence === 'low'
+        ? `<div style="font-size:9px;color:#9E7A4A;margin-top:4px">⚠ 地址待核实</div>`
+        : ''
       marker.bindPopup(`
-        <div style="font-family:'Noto Serif SC',serif;min-width:140px">
-          <div style="font-size:13px;font-weight:700;color:#2C1A0A;margin-bottom:2px">${store.name}</div>
-          <div style="font-size:10px;color:#9E7A4A;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px">${store.neighborhood}</div>
-          <div style="font-size:11px;color:#2C1A0A;opacity:.7;line-height:1.5">${store.address}</div>
+        <div style="font-family:'Noto Serif SC',serif;min-width:150px">
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:3px">
+            <span style="font-size:13px;font-weight:700;color:#2C1A0A">${store.name}</span>${badgeHtml}
+          </div>
+          <div style="font-size:10px;color:#9E7A4A;margin-bottom:3px">${store.neighborhood} · ${store.address}</div>
+          ${sigHtml}${warnHtml}
         </div>
-      `, { maxWidth: 200 })
+      `, { maxWidth: 230 })
     })
 
     mapRef.current = map
@@ -102,19 +120,14 @@ export default function HangzhouMap({ stores }: Props) {
         {/* legend */}
         <div className="flex-[35] min-w-0 border-l border-dashed border-ink/15 p-5 flex flex-col overflow-y-auto">
           <div className="pb-4 mb-4 border-b border-dashed border-ink/15">
-            <p className="font-mono text-[10px] tracking-widest uppercase text-sepia mb-3">图例</p>
+            <p className="font-mono text-[10px] tracking-widest uppercase text-sepia mb-3">区域</p>
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full bg-terracotta border border-ink shrink-0" />
-                <span className="font-serif text-xs text-ink">独立烘焙</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="relative w-4 h-4 mr-[5px] shrink-0">
-                  <div className="absolute inset-0 rounded-full bg-terracotta border border-ink translate-x-[4px] translate-y-[4px] opacity-60" />
-                  <div className="relative w-4 h-4 rounded-full bg-terracotta border border-ink" />
+              {Object.entries(DISTRICT_COLORS).map(([name, color]) => (
+                <div key={name} className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full border border-ink/30 shrink-0" style={{ background: color }} />
+                  <span className="font-serif text-xs text-ink">{name}</span>
                 </div>
-                <span className="font-serif text-xs text-ink">连锁品牌</span>
-              </div>
+              ))}
             </div>
           </div>
 

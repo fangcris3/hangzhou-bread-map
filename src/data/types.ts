@@ -15,4 +15,7 @@ export interface Store {
   lng?: number
   isChain?: boolean
   region?: 'north' | 'south'
+  signatureItems?: string[]
+  rating?: string
+  confidence?: 'high' | 'medium' | 'low'
 }

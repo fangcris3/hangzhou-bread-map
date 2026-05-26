@@ -58,7 +58,7 @@ const Book = forwardRef<BookHandle, Props>(function Book({ pages, initialPage = 
     <div
       className={`book book--backdrop-${backdrop}${isAnimating ? ' is-animating' : ''}`}
       role="region"
-      aria-label="Cold Brew Field Guide book"
+      aria-label="杭州面包地图"
     >
       <div className="book-stage">
         <div className="magazine">

@@ -61,7 +61,7 @@ export function exportCSV(stores: Store[]): void {
       return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str
     }).join(','))
     .join('\n')
-  download(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'coldbrewmap.csv')
+  download(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'hzroadbook.csv')
 }
 
 function download(blob: Blob, filename: string): void {

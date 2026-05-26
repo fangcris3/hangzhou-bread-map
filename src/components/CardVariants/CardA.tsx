@@ -6,8 +6,13 @@ interface Props {
 
 function StickerPlaceholder() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-14 h-14 text-sepia/30">
-      <path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4zM6 1v3M10 1v3M14 1v3" strokeLinecap="round" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-14 h-14 text-sepia/30" strokeLinecap="round" strokeLinejoin="round">
+      {/* bread loaf */}
+      <path d="M3 16C3 12.5 5.5 9.5 12 9.5C18.5 9.5 21 12.5 21 16V20H3V16Z" />
+      {/* score line on top */}
+      <path d="M7 14C8.5 11.5 15.5 11.5 17 14" />
+      {/* bottom crust seam */}
+      <line x1="3" y1="20" x2="21" y2="20" />
     </svg>
   )
 }

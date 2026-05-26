@@ -13,15 +13,15 @@ const MAP_ZOOM = 13
 
 function makeIcon(mapNumber: number, isChain?: boolean) {
   const shadow = isChain
-    ? `<div style="position:absolute;inset:0;border-radius:50%;background:#B86A47;border:2px solid #3A2415;transform:translate(5px,5px);opacity:.55"></div>
-       <div style="position:absolute;inset:0;border-radius:50%;background:#B86A47;border:2px solid #3A2415;transform:translate(2.5px,2.5px);opacity:.75"></div>`
+    ? `<div style="position:absolute;inset:0;border-radius:50%;background:#C4893C;border:2px solid #2C1A0A;transform:translate(5px,5px);opacity:.55"></div>
+       <div style="position:absolute;inset:0;border-radius:50%;background:#C4893C;border:2px solid #2C1A0A;transform:translate(2.5px,2.5px);opacity:.75"></div>`
     : ''
   return L.divIcon({
     className: '',
     html: `<div style="position:relative;width:28px;height:28px">
       ${shadow}
-      <div style="position:relative;width:28px;height:28px;border-radius:50%;background:#B86A47;border:2px solid #3A2415;display:flex;align-items:center;justify-content:center;box-shadow:2px 3px 10px rgba(58,36,21,.4)">
-        <span style="font-family:'Courier Prime',monospace;font-size:10px;font-weight:700;color:#F5EBD6;line-height:1">${mapNumber}</span>
+      <div style="position:relative;width:28px;height:28px;border-radius:50%;background:#C4893C;border:2px solid #2C1A0A;display:flex;align-items:center;justify-content:center;box-shadow:2px 3px 10px rgba(58,36,21,.4)">
+        <span style="font-family:'Courier Prime',monospace;font-size:10px;font-weight:700;color:#FAF3E4;line-height:1">${mapNumber}</span>
       </div>
     </div>`,
     iconSize: [28, 28],
@@ -58,9 +58,9 @@ export default function HangzhouMap({ stores }: Props) {
 
       marker.bindPopup(`
         <div style="font-family:'Noto Serif SC',serif;min-width:140px">
-          <div style="font-size:13px;font-weight:700;color:#3A2415;margin-bottom:2px">${store.name}</div>
-          <div style="font-size:10px;color:#A67A4E;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px">${store.neighborhood}</div>
-          <div style="font-size:11px;color:#3A2415;opacity:.7;line-height:1.5">${store.address}</div>
+          <div style="font-size:13px;font-weight:700;color:#2C1A0A;margin-bottom:2px">${store.name}</div>
+          <div style="font-size:10px;color:#9E7A4A;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px">${store.neighborhood}</div>
+          <div style="font-size:11px;color:#2C1A0A;opacity:.7;line-height:1.5">${store.address}</div>
         </div>
       `, { maxWidth: 200 })
     })
@@ -76,7 +76,7 @@ export default function HangzhouMap({ stores }: Props) {
   return (
     <div className="h-full w-full bg-paper bg-texture font-serif text-ink flex flex-col">
       {/* banner */}
-      <div className="bg-[#4A2D1A] shrink-0 px-8 py-3 flex items-center justify-between">
+      <div className="bg-grain shrink-0 px-8 py-3 flex items-center justify-between">
         <span className="font-display text-xl font-bold text-paper leading-none tracking-wide">杭州面包地图</span>
         {SITE_CONFIG.googleMapsUrl && (
           <a href={SITE_CONFIG.googleMapsUrl} target="_blank" rel="noopener noreferrer"

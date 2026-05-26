@@ -44,7 +44,7 @@ export default function Demo() {
       <div className="border-b border-ink/15 px-8 py-6 flex items-center gap-6">
         <div>
           <p className="font-mono text-[10px] tracking-[0.4em] uppercase text-sepia">
-            Mushroom's Cold Brew Field Guide
+            杭州面包地图
           </p>
           <h1 className="font-display text-4xl font-bold text-ink leading-none">Layout Lab</h1>
         </div>

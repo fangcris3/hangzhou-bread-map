@@ -5,13 +5,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        paper:      '#F5EBD6',
-        ink:        '#3A2415',
-        coffee:     '#4A2D1A',
-        terracotta: '#B86A47',
-        sepia:      '#A67A4E',
-        moss:       '#6E8E5A',
-        mustard:    '#D8A536',
+        paper:      '#FAF3E4',
+        ink:        '#2C1A0A',
+        grain:      '#5C3620',
+        terracotta: '#C4893C',
+        sepia:      '#9E7A4A',
+        herb:       '#7A9B6A',
+        wheat:      '#DDB843',
       },
       fontFamily: {
         display: ['"Ma Shan Zheng"', '"Noto Serif SC"', 'serif'],

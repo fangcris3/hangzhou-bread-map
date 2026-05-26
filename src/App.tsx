@@ -174,7 +174,7 @@ function FieldNotesPage({
   return (
     <div className="min-h-full w-full bg-paper bg-texture font-serif text-ink flex flex-col">
       {/* top banner */}
-      <div className="bg-[#4A2D1A] shrink-0 px-8 py-3 flex items-center justify-between">
+      <div className="bg-grain shrink-0 px-8 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <span className="font-display text-xl font-bold text-paper leading-none tracking-wide">杭州面包地图</span>
         </div>

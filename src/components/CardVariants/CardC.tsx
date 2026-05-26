@@ -6,8 +6,11 @@ interface Props {
 
 function StickerPlaceholder() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-16 h-16 text-sepia/30">
-      <path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4zM6 1v3M10 1v3M14 1v3" strokeLinecap="round" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-16 h-16 text-sepia/30" strokeLinecap="round" strokeLinejoin="round">
+      {/* bread loaf */}
+      <path d="M3 16C3 12.5 5.5 9.5 12 9.5C18.5 9.5 21 12.5 21 16V20H3V16Z" />
+      <path d="M7 14C8.5 11.5 15.5 11.5 17 14" />
+      <line x1="3" y1="20" x2="21" y2="20" />
     </svg>
   )
 }
@@ -52,9 +55,9 @@ function RadarChart({ b, s, p }: { b: number; s: number; p: number }) {
         return <circle key={i} cx={x} cy={y} r="1.2" fill="#8B4A42" />
       })}
       {/* labels */}
-      <text x="50" y="7" textAnchor="middle" fontSize="5" fontFamily="monospace" letterSpacing="0.5" fill="#2C1810">BITTER</text>
-      <text x="13" y="77" textAnchor="middle" fontSize="5" fontFamily="monospace" letterSpacing="0.5" fill="#2C1810">SWEET</text>
-      <text x="87" y="77" textAnchor="middle" fontSize="5" fontFamily="monospace" letterSpacing="0.5" fill="#2C1810">POWER</text>
+      <text x="50" y="7" textAnchor="middle" fontSize="5.5" fontFamily="'Noto Serif SC',serif" fill="#2C1A0A">酥脆</text>
+      <text x="10" y="77" textAnchor="middle" fontSize="5.5" fontFamily="'Noto Serif SC',serif" fill="#2C1A0A">松软</text>
+      <text x="90" y="77" textAnchor="middle" fontSize="5.5" fontFamily="'Noto Serif SC',serif" fill="#2C1A0A">风味</text>
     </svg>
   )
 }

@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react'
 import { loadStores, saveStores } from './data/storage'
-import { SITE_CONFIG } from './data/config'
 import type { Store } from './data/types'
 import CoverPage from './components/CoverPage/CoverPage'
 import CardA from './components/CardVariants/CardA'
 import AdminPanel from './components/AdminPanel/AdminPanel'
 import Demo from './components/Demo/Demo'
+import HangzhouMap from './components/HangzhouMap/HangzhouMap'
 import Book, { type BookHandle, type BookPage, type BookBackdrop } from './components/Book/Book'
 
 const params = new URLSearchParams(window.location.search)
@@ -22,7 +22,6 @@ export default function App() {
 
   const [stores, setStores] = useState<Store[]>(() => loadStores(isAdmin))
   const [editingStore, setEditingStore] = useState<Store | null>(null)
-  const [placingStore, setPlacingStore] = useState<Store | null>(null)
   const bookRef = useRef<BookHandle>(null)
 
   function handleSave(updated: Store) {
@@ -40,35 +39,6 @@ export default function App() {
     setStores(next)
     saveStores(next)
     setEditingStore(null)
-  }
-
-  function handleStartPlace(store: Store) {
-    setPlacingStore(store)
-    setEditingStore(null)
-    const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches
-    if (isDesktop && bookRef.current) {
-      bookRef.current.goToPage(store.region === 'south' ? 'map-south' : 'map-north')
-    } else {
-      document.getElementById('map-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }
-
-  function handlePlace(id: string, coords: { x: number; y: number }) {
-    const next = stores.map(s => s.id === id ? { ...s, mapCoords: coords } : s)
-    setStores(next)
-    saveStores(next)
-    setPlacingStore(null)
-  }
-
-  function handleClearPin(id: string) {
-    const next = stores.map(s => {
-      if (s.id !== id) return s
-      const { mapCoords: _, ...rest } = s
-      return rest
-    })
-    setStores(next)
-    saveStores(next)
-    setPlacingStore(null)
   }
 
   function handleNew() {
@@ -110,34 +80,8 @@ export default function App() {
     { id: 'cover', content: <CoverPage /> },
     ...fieldNotesPages,
     {
-      id: 'map-north',
-      content: (
-        <RegionalMapPage
-          region="north"
-          mapSrc="/map_north.png"
-          stores={stores}
-          isAdmin={isAdmin}
-          placingStore={placingStore}
-          onPlace={handlePlace}
-          onStartPlace={handleStartPlace}
-          onCancelPlace={() => setPlacingStore(null)}
-        />
-      ),
-    },
-    {
-      id: 'map-south',
-      content: (
-        <RegionalMapPage
-          region="south"
-          mapSrc="/map_south.png"
-          stores={stores}
-          isAdmin={isAdmin}
-          placingStore={placingStore}
-          onPlace={handlePlace}
-          onStartPlace={handleStartPlace}
-          onCancelPlace={() => setPlacingStore(null)}
-        />
-      ),
+      id: 'map',
+      content: <HangzhouMap stores={stores} />,
     },
     { id: 'colophon', content: <ColophonPage /> },
   ]
@@ -192,8 +136,10 @@ export default function App() {
 
         <section id="map-section" className="page-section px-6 py-16">
           <h2 className="font-display text-5xl font-bold text-ink mb-1 leading-none">地图</h2>
-          <p className="font-mono text-xs text-sepia tracking-widest uppercase mb-6">— 杭州，浙江</p>
-          <p className="font-serif italic text-sm text-ink/60">在桌面端打开可查看完整的分区互动地图。</p>
+          <p className="font-mono text-xs text-sepia tracking-widest uppercase mb-6">— 西湖区 · 拱墅区</p>
+          <div className="border border-dashed border-sepia/40 overflow-hidden rounded-sm" style={{ height: 320 }}>
+            <HangzhouMap stores={stores} />
+          </div>
         </section>
       </div>
 
@@ -204,8 +150,6 @@ export default function App() {
           onSave={handleSave}
           onDelete={handleDelete}
           onClose={() => setEditingStore(null)}
-          onPlaceOnMap={handleStartPlace}
-          onClearPin={handleClearPin}
           allStores={stores}
           onStoresChange={next => { setStores(next); saveStores(next) }}
         />
@@ -259,158 +203,6 @@ function FieldNotesPage({
   )
 }
 
-function RegionalMapPage({
-  region,
-  mapSrc,
-  stores,
-  isAdmin,
-  placingStore,
-  onPlace,
-  onStartPlace,
-  onCancelPlace,
-}: {
-  region: 'north' | 'south'
-  mapSrc: string
-  stores: Store[]
-  isAdmin: boolean
-  placingStore: Store | null
-  onPlace: (id: string, coords: { x: number; y: number }) => void
-  onStartPlace: (store: Store) => void
-  onCancelPlace: () => void
-}) {
-  const mapRef = useRef<HTMLDivElement>(null)
-  const regionStores = stores.filter(s => s.region === region).sort((a, b) => a.mapNumber - b.mapNumber)
-  const isPlacingHere = placingStore?.region === region
-
-  function handleMapClick(e: React.MouseEvent) {
-    if (!isPlacingHere || !mapRef.current || !onPlace) return
-    const rect = mapRef.current.getBoundingClientRect()
-    onPlace(placingStore!.id, {
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
-    })
-  }
-
-  const title = region === 'north' ? '西湖 · 拱墅' : '上城 · 滨江'
-
-  return (
-    <div className="h-full w-full bg-paper bg-texture font-serif text-ink flex flex-col">
-      {/* banner */}
-      <div className="bg-[#4A2D1A] shrink-0 px-8 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <span className="font-display text-xl font-bold text-paper leading-none tracking-wide">杭州面包地图</span>
-        </div>
-        {SITE_CONFIG.googleMapsUrl && (
-          <a href={SITE_CONFIG.googleMapsUrl} target="_blank" rel="noopener noreferrer"
-            className="font-mono text-[9px] tracking-widest uppercase text-paper/70 hover:text-paper transition-colors">
-            Google Maps ↗
-          </a>
-        )}
-      </div>
-
-      {/* placing banner */}
-      {isAdmin && isPlacingHere && (
-        <div className="shrink-0 flex items-center justify-between gap-4 px-6 py-2 bg-terracotta/10 border-b border-terracotta/30">
-          <span className="font-mono text-[11px] tracking-wider uppercase text-terracotta">
-            Placing № {placingStore!.mapNumber} · {placingStore!.name || '(unnamed)'} — click map
-          </span>
-          <button onClick={onCancelPlace} className="font-mono text-[10px] tracking-widest uppercase text-terracotta/70 hover:text-terracotta">Cancel</button>
-        </div>
-      )}
-
-      {/* body: 2 columns */}
-      <div className="flex-1 min-h-0 flex gap-0">
-        {/* map column (~65%) */}
-        <div className="flex-[65] min-w-0 p-6 flex flex-col justify-center">
-          <p className="font-mono text-[10px] tracking-widest uppercase text-sepia mb-3">— {title}</p>
-          <div
-            ref={mapRef}
-            onClick={handleMapClick}
-            className={`relative w-full border border-dashed border-sepia/40 overflow-hidden ${isPlacingHere ? 'cursor-crosshair' : ''}`}
-            style={{ aspectRatio: '4/3' }}
-          >
-            <img src={mapSrc} alt={title} className="absolute inset-0 w-full h-full object-cover" />
-            {regionStores.filter(s => s.mapCoords).map(store => {
-              const { x = 0, y = 0 } = store.mapCoords!
-              return (
-                <button
-                  key={store.id}
-                  type="button"
-                  onClick={e => { if (!isAdmin) return; e.stopPropagation(); onStartPlace(store) }}
-                  className={`absolute -translate-x-1/2 -translate-y-1/2 ${isAdmin ? 'hover:scale-110 cursor-pointer' : 'cursor-default'}`}
-                  style={{ left: `${x * 100}%`, top: `${y * 100}%` }}
-                  title={`${store.mapNumber} · ${store.name}`}
-                >
-                  <div className="relative w-7 h-7">
-                    {store.isChain && (
-                      <>
-                        <div className="absolute inset-0 rounded-full bg-terracotta border-2 border-ink translate-x-[6px] translate-y-[6px] opacity-80" />
-                        <div className="absolute inset-0 rounded-full bg-terracotta border-2 border-ink translate-x-[3px] translate-y-[3px] opacity-90" />
-                      </>
-                    )}
-                    <div className="relative w-7 h-7 rounded-full bg-terracotta border-2 border-ink shadow-sm flex items-center justify-center">
-                      <span className="font-mono text-[10px] font-bold text-paper leading-none">{store.mapNumber}</span>
-                    </div>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* legend column (~35%) */}
-        <div className="flex-[35] min-w-0 border-l border-dashed border-ink/15 p-6 flex flex-col overflow-y-auto">
-          {/* pin-type key */}
-          <div className="pb-4 mb-4 border-b border-dashed border-ink/15">
-            <p className="font-mono text-[10px] tracking-widest uppercase text-sepia mb-3">Key</p>
-            <div className="flex items-center gap-5 flex-wrap">
-              <div className="flex items-center gap-2">
-                <div className="relative shrink-0 w-4 h-4">
-                  <div className="relative w-4 h-4 rounded-full bg-terracotta border border-ink" />
-                </div>
-                <span className="font-serif text-xs text-ink">Independent</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="relative shrink-0 w-4 h-4 mr-[5px]">
-                  <div className="absolute inset-0 rounded-full bg-terracotta border border-ink translate-x-[4px] translate-y-[4px] opacity-80" />
-                  <div className="absolute inset-0 rounded-full bg-terracotta border border-ink translate-x-[2px] translate-y-[2px] opacity-90" />
-                  <div className="relative w-4 h-4 rounded-full bg-terracotta border border-ink" />
-                </div>
-                <span className="font-serif text-xs text-ink">Chain</span>
-              </div>
-            </div>
-          </div>
-          <p className="font-mono text-[10px] tracking-widest uppercase text-sepia mb-4">Legend</p>
-          {regionStores.length === 0 ? (
-            <p className="font-serif italic text-xs text-ink/40">暂无面包店分配到此区域。</p>
-          ) : (
-            <div className="space-y-3">
-              {regionStores.map(store => (
-                <div key={store.id} className="flex items-start gap-3">
-                  <div className="relative shrink-0 w-6 h-6 mt-0.5">
-                    {store.isChain && (
-                      <>
-                        <div className="absolute inset-0 rounded-full bg-terracotta border border-ink translate-x-[4px] translate-y-[4px] opacity-80" />
-                        <div className="absolute inset-0 rounded-full bg-terracotta border border-ink translate-x-[2px] translate-y-[2px] opacity-90" />
-                      </>
-                    )}
-                    <div className="relative w-6 h-6 rounded-full bg-terracotta border border-ink flex items-center justify-center">
-                      <span className="font-mono text-[9px] font-bold text-paper">{store.mapNumber}</span>
-                    </div>
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-display text-sm font-bold text-ink leading-tight truncate">{store.name}</p>
-                    <p className="font-mono text-[9px] tracking-widest uppercase text-sepia">{store.neighborhood}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 function ColophonPage() {
   return (

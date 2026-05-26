@@ -11,7 +11,8 @@ export interface Store {
   }
   photo: string
   mapNumber: number
-  mapCoords?: { x: number; y: number }
+  lat?: number
+  lng?: number
   isChain?: boolean
   region?: 'north' | 'south'
 }

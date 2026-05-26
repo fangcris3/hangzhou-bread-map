@@ -22,8 +22,8 @@ export default function IllustratedMap({
 }: Props) {
   const mapRef = useRef<HTMLDivElement>(null)
 
-  const placed = stores.filter(s => s.mapCoords)
-  const unplaced = stores.filter(s => !s.mapCoords)
+  const placed = stores.filter(s => s.lat != null)
+  const unplaced = stores.filter(s => !s.lat != null)
 
   function handleMapClick(e: React.MouseEvent) {
     if (!placingStore || !mapRef.current || !onPlace) return
@@ -95,7 +95,8 @@ export default function IllustratedMap({
 }
 
 function Pin({ store, isAdmin, onClick }: { store: Store; isAdmin: boolean; onClick?: (store: Store) => void }) {
-  const { x = 0, y = 0 } = store.mapCoords!
+  const x = store.lng ?? 0
+  const y = store.lat ?? 0
   return (
     <button
       type="button"

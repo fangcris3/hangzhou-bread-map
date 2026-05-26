@@ -9,66 +9,72 @@
     "photo": "",
     "mapNumber": 1,
     "region": "north",
-    "mapCoords": { "x": 0.38, "y": 0.52 }
+    "lat": 30.2467,
+    "lng": 120.1489
   },
   {
     "id": "hz-02",
-    "name": "面包共和国",
-    "address": "体育场路202号",
-    "neighborhood": "上城区",
-    "shortReview": "装修像一间旧式档案馆，面包却完全不复古。可颂层次多得像在数年轮，黄油香气在鼻腔里留三分钟。吐司系列偏日系，软到可以直接当枕头。",
-    "ratings": { "crust": 4, "softness": 5, "flavor": 4 },
-    "photo": "",
-    "mapNumber": 2,
-    "region": "south",
-    "mapCoords": { "x": 0.58, "y": 0.44 }
-  },
-  {
-    "id": "hz-03",
-    "name": "运河烘焙所",
-    "address": "桥西直街14号",
-    "neighborhood": "拱墅区",
-    "shortReview": "大运河边开了四年，老板坚持不用预拌粉。黑麦全麦味道扎实，配一杯美式能撑半个下午。核桃葡萄干款是招牌，带点微甜但不腻。运河的风吹进来，面包的香气就到了街上。",
-    "ratings": { "crust": 4, "softness": 3, "flavor": 5 },
-    "photo": "",
-    "mapNumber": 3,
-    "region": "north",
-    "mapCoords": { "x": 0.35, "y": 0.28 }
-  },
-  {
-    "id": "hz-04",
-    "name": "南岸面包厂",
-    "address": "滨江区白马湖路31号",
-    "neighborhood": "滨江区",
-    "shortReview": "厂房改建，烤炉在玻璃窗后面一目了然。盐可颂是店里的灵魂，表面撒粗盐，黄油从截面流出来。吐司用的是北海道牛乳，软度超乎想象，拉一下真的有拉丝效果。",
-    "ratings": { "crust": 3, "softness": 5, "flavor": 4 },
-    "photo": "",
-    "mapNumber": 4,
-    "region": "south",
-    "mapCoords": { "x": 0.65, "y": 0.72 }
-  },
-  {
-    "id": "hz-05",
     "name": "虎跑慢烤",
     "address": "虎跑路128号",
     "neighborhood": "西湖区",
     "shortReview": "去虎跑泉爬山路过，进来歇脚，没想到这是整个行程最好的决定。天然酵母长时间发酵，酸味很立体，口感有弹性。全麦核桃款最值得单独跑一趟。",
     "ratings": { "crust": 5, "softness": 2, "flavor": 5 },
     "photo": "",
+    "mapNumber": 2,
+    "region": "north",
+    "lat": 30.2094,
+    "lng": 120.1255
+  },
+  {
+    "id": "hz-03",
+    "name": "曙光路面包坊",
+    "address": "曙光路52号",
+    "neighborhood": "西湖区",
+    "shortReview": "西湖北岸的安静小店，玻璃橱窗里摆的全是当天出炉的品种。黄油可颂做得极为认真，层次分明，不油不腻。咸蛋黄酥皮包是限量款，开门前二十分钟就有人在排。",
+    "ratings": { "crust": 4, "softness": 4, "flavor": 4 },
+    "photo": "",
+    "mapNumber": 3,
+    "region": "north",
+    "lat": 30.2756,
+    "lng": 120.1289
+  },
+  {
+    "id": "hz-04",
+    "name": "运河烘焙所",
+    "address": "桥西直街14号",
+    "neighborhood": "拱墅区",
+    "shortReview": "大运河边开了四年，老板坚持不用预拌粉。黑麦全麦味道扎实，配一杯美式能撑半个下午。核桃葡萄干款是招牌，带点微甜但不腻。运河的风吹进来，面包的香气就到了街上。",
+    "ratings": { "crust": 4, "softness": 3, "flavor": 5 },
+    "photo": "",
+    "mapNumber": 4,
+    "region": "north",
+    "lat": 30.3207,
+    "lng": 120.1203
+  },
+  {
+    "id": "hz-05",
+    "name": "小河直街烘焙",
+    "address": "小河直街45号",
+    "neighborhood": "拱墅区",
+    "shortReview": "历史街区里的新店，老房子里飘出新鲜面包的香味，反差感特别好。招牌是用小麦胚芽做的全麦吐司，每片切厚一点才好吃。周末来顺便逛逛运河边的市集。",
+    "ratings": { "crust": 3, "softness": 5, "flavor": 4 },
+    "photo": "",
     "mapNumber": 5,
     "region": "north",
-    "mapCoords": { "x": 0.25, "y": 0.65 }
+    "lat": 30.3155,
+    "lng": 120.1278
   },
   {
     "id": "hz-06",
-    "name": "钱塘月饼包",
-    "address": "钱江新城民心路9号",
-    "neighborhood": "江干区",
-    "shortReview": "名字带月饼但主力是法式系列，老板是语言学硕士转行烘焙，讲起面包来比讲论文还投入。法棍和田园面包各有拥趸，周末排队别想，工作日来刚刚好。",
+    "name": "拱宸桥西烘焙",
+    "address": "拱宸桥西路22号",
+    "neighborhood": "拱墅区",
+    "shortReview": "拱宸桥边，桥上来来往往，店里却安静得很。酸种系列是主角，用本地面粉发酵，风味比那些进口粉更有层次。老板不做外卖，想吃就得来现场坐着等。",
     "ratings": { "crust": 4, "softness": 3, "flavor": 5 },
     "photo": "",
     "mapNumber": 6,
-    "region": "south",
-    "mapCoords": { "x": 0.72, "y": 0.38 }
+    "region": "north",
+    "lat": 30.3268,
+    "lng": 120.1189
   }
 ]

@@ -4,7 +4,7 @@ import * as Slider from '@radix-ui/react-slider'
 import * as Label from '@radix-ui/react-label'
 import type { Store } from '../../data/types'
 import { exportJSON, exportCSV } from '../../data/storage'
-import { X, Upload, MapPin } from 'lucide-react'
+import { X, Upload } from 'lucide-react'
 
 interface Props {
   store: Store
@@ -12,13 +12,11 @@ interface Props {
   onSave: (store: Store) => void
   onDelete?: (id: string) => void
   onClose: () => void
-  onPlaceOnMap?: (store: Store) => void
-  onClearPin?: (id: string) => void
   allStores: Store[]
   onStoresChange: (stores: Store[]) => void
 }
 
-export default function AdminPanel({ store, isNew, onSave, onDelete, onClose, onPlaceOnMap, onClearPin, allStores, onStoresChange }: Props) {
+export default function AdminPanel({ store, isNew, onSave, onDelete, onClose, allStores, onStoresChange }: Props) {
   const [draft, setDraft] = useState<Store>({ ...store })
   const [dragging, setDragging] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -186,74 +184,48 @@ export default function AdminPanel({ store, isNew, onSave, onDelete, onClose, on
                 ))}
               </div>
 
-              {/* map number + chain toggle + region + pin placement */}
-              <div className="flex items-end justify-between gap-4">
-                <div className="flex items-end gap-4 flex-wrap">
-                  <Field label="Map Number">
-                    <input
-                      type="number" min={1}
-                      className="w-20 bg-ink/5 border border-ink/10 focus:border-terracotta rounded-sm px-3 py-2 font-mono text-sm text-ink outline-none"
-                      value={draft.mapNumber}
-                      onChange={e => setDraft(d => ({ ...d, mapNumber: Number(e.target.value) }))}
-                    />
-                  </Field>
-                  <label className="flex items-center gap-2 pb-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="accent-terracotta w-4 h-4"
-                      checked={!!draft.isChain}
-                      onChange={e => setDraft(d => ({ ...d, isChain: e.target.checked || undefined }))}
-                    />
-                    <span className="font-mono text-[10px] tracking-widest uppercase text-sepia">Chain</span>
-                  </label>
-                  <div className="flex items-center gap-2 pb-2">
-                    <span className="font-mono text-[10px] tracking-widest uppercase text-sepia">Region</span>
-                    {(['north', 'south', undefined] as const).map(r => (
-                      <label key={String(r)} className="flex items-center gap-1 cursor-pointer">
-                        <input
-                          type="radio"
-                          className="accent-terracotta"
-                          checked={draft.region === r}
-                          onChange={() => setDraft(d => ({ ...d, region: r }))}
-                        />
-                        <span className="font-mono text-[10px] tracking-widest uppercase text-ink capitalize">
-                          {r === 'north' ? '西湖·拱墅' : r === 'south' ? '上城·滨江' : '未分区'}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                {onPlaceOnMap && !isNew && (
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => { onSave(draft); onPlaceOnMap(draft) }}
-                      className="font-mono text-[10px] tracking-widest uppercase border border-ink/60 text-ink px-3 py-2 hover:bg-paper flex items-center gap-1.5"
-                    >
-                      <MapPin size={12} />
-                      {draft.mapCoords ? 'Move Pin' : 'Place on Map'}
-                    </button>
-                    {draft.mapCoords && onClearPin && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (confirm('Remove this pin from the map?')) {
-                            onClearPin(draft.id)
-                            setDraft(d => { const { mapCoords: _, ...rest } = d; return rest })
-                          }
-                        }}
-                        className="font-mono text-[10px] tracking-widest uppercase border border-terracotta/60 text-terracotta px-3 py-2 hover:bg-terracotta hover:text-paper transition-colors flex items-center gap-1.5"
-                      >
-                        <X size={12} />
-                        Clear Pin
-                      </button>
-                    )}
-                  </div>
-                )}
+              {/* map number + chain toggle */}
+              <div className="flex items-end gap-4 flex-wrap">
+                <Field label="编号">
+                  <input
+                    type="number" min={1}
+                    className="w-20 bg-ink/5 border border-ink/10 focus:border-terracotta rounded-sm px-3 py-2 font-mono text-sm text-ink outline-none"
+                    value={draft.mapNumber}
+                    onChange={e => setDraft(d => ({ ...d, mapNumber: Number(e.target.value) }))}
+                  />
+                </Field>
+                <label className="flex items-center gap-2 pb-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="accent-terracotta w-4 h-4"
+                    checked={!!draft.isChain}
+                    onChange={e => setDraft(d => ({ ...d, isChain: e.target.checked || undefined }))}
+                  />
+                  <span className="font-mono text-[10px] tracking-widest uppercase text-sepia">连锁</span>
+                </label>
               </div>
-              {onPlaceOnMap && isNew && (
-                <p className="font-mono text-[10px] text-sepia">Save first, then you can place the pin on the map.</p>
-              )}
+
+              {/* lat/lng */}
+              <div className="flex gap-3">
+                <Field label="纬度 Lat">
+                  <input
+                    type="number" step="0.0001"
+                    placeholder="30.2xxx"
+                    className="w-full bg-ink/5 border border-ink/10 focus:border-terracotta rounded-sm px-3 py-2 font-mono text-sm text-ink outline-none"
+                    value={draft.lat ?? ''}
+                    onChange={e => setDraft(d => ({ ...d, lat: e.target.value ? Number(e.target.value) : undefined }))}
+                  />
+                </Field>
+                <Field label="经度 Lng">
+                  <input
+                    type="number" step="0.0001"
+                    placeholder="120.1xxx"
+                    className="w-full bg-ink/5 border border-ink/10 focus:border-terracotta rounded-sm px-3 py-2 font-mono text-sm text-ink outline-none"
+                    value={draft.lng ?? ''}
+                    onChange={e => setDraft(d => ({ ...d, lng: e.target.value ? Number(e.target.value) : undefined }))}
+                  />
+                </Field>
+              </div>
             </div>
 
             {/* footer */}

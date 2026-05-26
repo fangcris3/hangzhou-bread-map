@@ -14,8 +14,8 @@ const config: Config = {
         mustard:    '#D8A536',
       },
       fontFamily: {
-        display: ['"Amatic SC"', 'cursive'],
-        serif:   ['Nunito', 'system-ui', 'sans-serif'],
+        display: ['"Ma Shan Zheng"', '"Noto Serif SC"', 'serif'],
+        serif:   ['"Noto Serif SC"', 'Georgia', 'serif'],
         mono:    ['"Courier Prime"', 'Courier New', 'monospace'],
         sans:    ['Inter', 'system-ui', 'sans-serif'],
       },
